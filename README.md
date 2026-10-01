@@ -1,62 +1,56 @@
-# روض واحتي الصغيرة — الموقع الرسمي
+# روض واحتي الصغيرة — Rawd Wahati Saghira
 
-موقع عربي (من اليمين إلى اليسار) لروض وحضانة «واحتي الصغيرة» بالدار البيضاء، متجاوب مع الهاتف واللوحة والحاسوب.
+Site officiel (arabe, RTL) du روض واحتي الصغيرة, Casablanca.
+En ligne : https://roudwahasakhira.lovable.app/
 
-## بنية المشروع
+## Technologies
+React 19 · TypeScript · TanStack Start / Router · Vite 7 · Tailwind CSS v4 · police Cairo (Google Fonts) · icônes lucide-react.
 
-```
-index.html     الصفحة الكاملة (جميع الأقسام)
-style.css      كل التنسيقات، الألوان، التجاوب والحركات
-script.js      القائمة، التمرير، معرض الصور، النماذج، WhatsApp
-README.md      هذا الملف
-images/        جميع الصور والشعار وأيقونة المتصفح
-```
-
-## تشغيل الموقع
-
-افتحوا `index.html` مباشرة في المتصفح (نقرة مزدوجة). لا يحتاج إلى أي برنامج أو خادم.
-يلزم اتصال بالإنترنت فقط لتحميل خط Cairo من Google Fonts.
-
-## تعديل النصوص
-
-افتحوا `index.html` بأي محرر نصوص (مثل VS Code أو Notepad++)، وابحثوا عن الجملة المراد تغييرها، ثم استبدلوها واحفظوا الملف.
-الأقسام معرّفة بـ: `home`، `about`، `programs`، `activities`، `gallery`، `spaces`، `register`، `complaint`، `location`.
-
-## استبدال الصور
-
-ضعوا الصورة الجديدة داخل مجلد `images/` بنفس الاسم القديم (مثلاً `gallery-play.webp`) فتظهر تلقائياً.
-أو غيّروا اسم الملف داخل `index.html` في الخاصية `src="images/..."`، وحدّثوا نص `alt` لوصف الصورة.
-
-## استبدال الشعار
-
-استبدلوا الملف `images/logo.webp` بشعاركم الجديد (يفضل خلفية شفافة، PNG أو WEBP).
-إذا غيرتم الاسم، ابحثوا في `index.html` عن `images/logo.webp` (يظهر في الرأس والتذييل).
-لأيقونة المتصفح استبدلوا `images/favicon.png` (مربعة 64×64).
-
-## تغيير رقم WhatsApp
-
-في `script.js` غيّروا السطر:
-
-```js
-var WHATSAPP_NUMBER = "212603539340";
+## Installation
+Node.js 20+ requis (ou Bun).
+```bash
+npm install        # ou: bun install
+npm run dev        # développement → http://localhost:8080
+npm run build      # build de production (dossier .output / dist)
+npm run preview    # tester le build
 ```
 
-(الصيغة الدولية بدون + وبدون مسافات). جميع الأزرار والنماذج تستعمل هذا الرقم تلقائياً.
-لتغيير رقم الهاتف الظاهر، ابحثوا في `index.html` عن `+212 603 539 340` و `tel:+212603539340`.
+## Structure
+```
+public/
+  favicon.png
+  images/            ← toutes les photos et le logo (.webp)
+src/
+  routes/__root.tsx  ← <html dir="rtl">, titre, police, SEO global
+  routes/index.tsx   ← TOUTE la page : menu, hero, à propos, programmes,
+                       activités, galerie, espaces, inscription, الشكاية,
+                       localisation, footer
+  assets/*.asset.json← chaque fichier pointe vers une image de public/images
+  styles.css         ← couleurs (variables CSS), police, utilitaires
+  components/ui/     ← composants UI réutilisables
+vite.config.ts, tsconfig.json, components.json, eslint.config.js
+```
 
-## تعديل نموذج الشكاية
+## Remplacer une image / le logo
+Remplacez le fichier dans `public/images/` en gardant le **même nom**
+(ex. `public/images/logo.webp` pour le logo, `hero-child.webp` pour la photo principale).
+Pour un nouveau nom, modifiez le champ `"url"` dans le fichier correspondant de `src/assets/`.
+Favicon : `public/favicon.png`.
 
-- الحقول والقائمة «نوع الطلب»: في `index.html` داخل `<form id="complaintForm">`. لإضافة نوع جديد أضيفوا سطراً `<option value="...">...</option>`.
-- الحقل الإجباري يحمل الخاصية `required`؛ احذفوها لجعله اختيارياً.
-- نص الرسالة المرسلة ورسالة النجاح: في `script.js` داخل قسم «نموذج الشكاية».
+## Modifier les textes
+Tous les textes sont dans `src/routes/index.tsx` (cherchez la phrase à changer).
+Titre et description Google : `head()` dans `src/routes/index.tsx` et `src/routes/__root.tsx`.
+Couleurs : variables `--primary`, `--gold`, `--sky`… dans `src/styles.css`.
 
-ملاحظة مهمة: النماذج (التسجيل والشكاية) لا تخزن البيانات على الموقع؛ بل تفتح WhatsApp برسالة جاهزة، ولا يصلكم الطلب إلا بعد أن يضغط ولي الأمر «إرسال» في WhatsApp.
+## WhatsApp / contact
+Cherchez `212603539340` dans `src/routes/index.tsx` et remplacez-le par le nouveau numéro
+(format international sans + ni espaces). Téléphone, adresse et carte sont dans le même fichier.
+Les formulaires « سجّل الآن » et « الشكاية » vérifient les champs requis puis ouvrent WhatsApp
+avec le message pré-rempli ; rien n'est enregistré sur le site.
+Pour modifier le formulaire de الشكاية, cherchez `complaint` dans `src/routes/index.tsx`.
 
-## نشر الموقع على الإنترنت
-
-أي استضافة للمواقع الثابتة تكفي:
-- **Netlify**: ادخلوا إلى app.netlify.com/drop واسحبوا المجلد كاملاً.
-- **GitHub Pages**: ارفعوا الملفات إلى مستودع، ثم Settings ← Pages ← اختاروا الفرع `main`.
-- **استضافة تقليدية (cPanel)**: ارفعوا الملفات إلى المجلد `public_html`.
-
-احرصوا على رفع مجلد `images/` مع الملفات الثلاثة.
+## Déploiement
+- **Lovable** : bouton Publish.
+- **Cloudflare Pages / Workers** (cible par défaut) : `npm run build`, puis `npx wrangler deploy`.
+- **GitHub** : `git init && git add . && git commit -m "init" && git remote add origin <url> && git push -u origin main`,
+  puis connectez le dépôt à Cloudflare, Netlify ou Vercel (commande de build : `npm run build`).

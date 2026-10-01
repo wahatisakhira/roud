@@ -1,0 +1,75 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Cairo", sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-mint: var(--mint);
+  --color-lilac: var(--lilac);
+  --color-rose: var(--rose);
+  --color-deep: var(--deep);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(.30 .018 245);
+  --card: oklch(1 0 0);
+  --primary: oklch(.68 .125 210);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(.95 .035 217);
+  --muted: oklch(.976 .009 226);
+  --muted-foreground: oklch(.51 .02 240);
+  --accent: oklch(.975 .052 92);
+  --border: oklch(.92 .012 225);
+  --sky: oklch(.75 .10 224);
+  --sky-soft: oklch(.95 .035 224);
+  --gold: oklch(.79 .14 82);
+  --gold-soft: oklch(.975 .09 96);
+  --mint: oklch(.73 .17 156);
+  --lilac: oklch(.83 .12 316);
+  --rose: oklch(.83 .14 5);
+  --deep: oklch(.38 .067 242);
+}
+@layer base {
+  * { border-color: var(--border); }
+  html { scroll-behavior: smooth; }
+  body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+  ::selection { background: var(--sky-soft); color: var(--deep); }
+  button, input, select, textarea { font: inherit; }
+  img { display: block; }
+}
+@layer utilities {
+  .section-wrap { width: min(100% - 40px, 1180px); margin-inline: auto; }
+  .section-space { padding-block: 88px; }
+  .soft-shadow { box-shadow: 0 12px 35px color-mix(in oklab, var(--deep) 9%, transparent); }
+  .map-grid { background-image: linear-gradient(var(--sky) 1px, transparent 1px), linear-gradient(90deg, var(--sky) 1px, transparent 1px); background-size: 42px 42px; }
+  .card-shadow { box-shadow: 0 8px 28px color-mix(in oklab, var(--deep) 8%, transparent); }
+}
+@media (max-width: 767px) {
+  .section-space { padding-block: 62px; }
+  .section-wrap { width: min(100% - 32px, 1180px); }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
