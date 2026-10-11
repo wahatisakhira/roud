@@ -1,56 +1,60 @@
-# روض واحتي الصغيرة — Rawd Wahati Saghira
+# روض واحتي الصغيرة — site web statique
 
-Site officiel (arabe, RTL) du روض واحتي الصغيرة, Casablanca.
-En ligne : https://roudwahasakhira.lovable.app/
+Version statique et autonome du site du jardin d'enfants **روض واحتي الصغيرة** (Casablanca).
+Elle reprend exactement le design, les textes, les images, le menu, les formulaires et la galerie du site Lovable, sans dépendre de Lovable pour l'affichage.
 
-## Technologies
-React 19 · TypeScript · TanStack Start / Router · Vite 7 · Tailwind CSS v4 · police Cairo (Google Fonts) · icônes lucide-react.
+## Arborescence
 
-## Installation
-Node.js 20+ requis (ou Bun).
-```bash
-npm install        # ou: bun install
-npm run dev        # développement → http://localhost:8080
-npm run build      # build de production (dossier .output / dist)
-npm run preview    # tester le build
+```
+wahati-static/
+├── index.html          Structure complète de la page (arabe, RTL)
+├── style.css           Tous les styles (Tailwind CSS compilé + styles du site)
+├── script.js           Menu mobile, formulaires WhatsApp, galerie des activités
+├── README.md           Ce guide
+└── assets/
+    └── images/         Logo, photos, favicon
+        ├── logo-official.webp   (logo officiel)
+        ├── favicon.png
+        ├── hero-child.webp
+        ├── nursery.webp, preschool.webp, awareness.jpg
+        └── space-play.webp, space-classroom.webp, space-rest.webp, space-dining.webp
 ```
 
-## Structure
-```
-public/
-  favicon.png
-  images/            ← toutes les photos et le logo (.webp)
-src/
-  routes/__root.tsx  ← <html dir="rtl">, titre, police, SEO global
-  routes/index.tsx   ← TOUTE la page : menu, hero, à propos, programmes,
-                       activités, galerie, espaces, inscription, الشكاية,
-                       localisation, footer
-  assets/*.asset.json← chaque fichier pointe vers une image de public/images
-  styles.css         ← couleurs (variables CSS), police, utilitaires
-  components/ui/     ← composants UI réutilisables
-vite.config.ts, tsconfig.json, components.json, eslint.config.js
-```
+## Tester en local
 
-## Remplacer une image / le logo
-Remplacez le fichier dans `public/images/` en gardant le **même nom**
-(ex. `public/images/logo.webp` pour le logo, `hero-child.webp` pour la photo principale).
-Pour un nouveau nom, modifiez le champ `"url"` dans le fichier correspondant de `src/assets/`.
-Favicon : `public/favicon.png`.
+Double-cliquez sur `index.html` : le site s'ouvre dans le navigateur.
+Pour un test plus proche d'un vrai hébergement : `python3 -m http.server 8000` dans le dossier, puis ouvrez http://localhost:8000.
 
-## Modifier les textes
-Tous les textes sont dans `src/routes/index.tsx` (cherchez la phrase à changer).
-Titre et description Google : `head()` dans `src/routes/index.tsx` et `src/routes/__root.tsx`.
-Couleurs : variables `--primary`, `--gold`, `--sky`… dans `src/styles.css`.
+## Modifier le site
 
-## WhatsApp / contact
-Cherchez `212603539340` dans `src/routes/index.tsx` et remplacez-le par le nouveau numéro
-(format international sans + ni espaces). Téléphone, adresse et carte sont dans le même fichier.
-Les formulaires « سجّل الآن » et « الشكاية » vérifient les champs requis puis ouvrent WhatsApp
-avec le message pré-rempli ; rien n'est enregistré sur le site.
-Pour modifier le formulaire de الشكاية, cherchez `complaint` dans `src/routes/index.tsx`.
+- **Textes** : ouvrez `index.html` et changez le texte arabe directement (recherchez la phrase avec Ctrl+F).
+- **Couleurs** : dans `style.css`, cherchez `:root {` — variables `--primary` (bleu), `--gold` (doré), `--deep` (bleu foncé), `--mint`, `--rose`, `--lilac`, `--sky`.
+- **Images** : remplacez un fichier dans `assets/images/` par une autre image **en gardant le même nom**.
+- **Logo** : remplacez `assets/images/logo-official.webp` (et `favicon.png` pour l'icône de l'onglet).
+- **Numéro WhatsApp** : en haut de `script.js`, `WHATSAPP_NUMBER`. Les liens WhatsApp de `index.html` contiennent aussi `wa.me/212603539340` : remplacez-les avec Ctrl+H. Le numéro de téléphone affiché (`tel:+212603539340`) est aussi dans `index.html`.
 
-## Déploiement
-- **Lovable** : bouton Publish.
-- **Cloudflare Pages / Workers** (cible par défaut) : `npm run build`, puis `npx wrangler deploy`.
-- **GitHub** : `git init && git add . && git commit -m "init" && git remote add origin <url> && git push -u origin main`,
-  puis connectez le dépôt à Cloudflare, Netlify ou Vercel (commande de build : `npm run build`).
+## Publier sur GitHub Pages
+
+1. Créez un dépôt sur https://github.com/new (par exemple `rawd-wahati`).
+2. Cliquez sur **Add file → Upload files**, glissez **le contenu** du dossier (index.html, style.css, script.js, README.md et le dossier assets), puis **Commit changes**.
+3. Allez dans **Settings → Pages**, choisissez **Deploy from a branch**, branche `main`, dossier `/ (root)`, puis **Save**.
+4. Après 1 à 2 minutes, le site est en ligne sur `https://VOTRE-NOM.github.io/rawd-wahati/`.
+
+Le site fonctionne aussi sur Netlify, Cloudflare Pages ou tout hébergement classique (envoyez les fichiers tels quels).
+
+## Services externes
+
+| Fonction | Dépend de | Fonctionne sur GitHub Pages ? |
+|---|---|---|
+| Police Cairo | Google Fonts (internet) | Oui |
+| Formulaires inscription et « الملاحظات », boutons WhatsApp | wa.me (WhatsApp) | Oui |
+| Lien « Google Maps » | Google Maps | Oui |
+| Photos des activités (« مشاهدة الصور ») | Lovable Cloud (base de données + stockage) | Oui, en lecture |
+
+**Galerie des activités** : les photos sont lues depuis Lovable Cloud avec une clé **publique** (lecture seule, protégée par les règles de sécurité). Aucune clé secrète ni mot de passe n'est dans le code. Tant qu'aucune photo n'est ajoutée, la galerie affiche « ستُضاف صور هذا النشاط قريباً ».
+
+## Limitations de la version statique
+
+- **Page d'administration `/admin` non incluse** : l'ajout, la suppression et l'ordre des photos d'activités nécessitent une connexion et un serveur. Continuez à gérer les photos depuis le site Lovable (https://roudwahasakhira.lovable.app/admin) ; elles apparaîtront automatiquement ici aussi.
+- **Aucun formulaire n'est enregistré sur le site** : le formulaire prépare un message et ouvre WhatsApp. La demande n'est envoyée que lorsque le parent appuie sur « envoyer » dans WhatsApp. Le message de remerciement s'affiche avant cet envoi.
+- Pour aller plus loin, le code source complet (React/TanStack, `package.json`, instructions `npm install` / `npm run build`) est disponible séparément dans l'archive `rawd-wahati-source.zip`.
